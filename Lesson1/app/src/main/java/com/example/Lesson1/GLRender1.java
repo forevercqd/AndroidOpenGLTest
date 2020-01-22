@@ -92,7 +92,18 @@ public class GLRender1 implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+
+        // 画三角形
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 6);
+
+        // 画横线
         GLES20.glDrawArrays(GLES20.GL_LINES, 6, 2);
 
+        // 画竖线
+        GLES20.glDrawArrays(GLES20.GL_LINES, 8, 2);
+
+        // 画点
+        GLES20.glDrawArrays(GLES20.GL_POINTS,8, 1);
+        GLES20.glDrawArrays(GLES20.GL_POINTS,9, 1);
     }
 }
