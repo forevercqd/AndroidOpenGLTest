@@ -16,9 +16,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // cqd.note.1 创建 GLSurfaceView, 然后调用 setContentView 将该 GLSurfaceView 替换掉默认的视图布局;
         mGlSurfaceView = new GLSurfaceView(this);
 
         mGlSurfaceView.setEGLContextClientVersion(2);
+
+        // cqd.note.2 需要往自定义的 GLSurfaceView 上画内容时，需要重写 GLSurfaceView 的 mRenderer;
         mGlSurfaceView.setRenderer(new GLRender1(this));
         mRenderSeted = true;
 

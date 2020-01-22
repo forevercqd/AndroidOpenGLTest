@@ -64,6 +64,7 @@ public class GLRender1 implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
+        // cqd.note.3 利用工具类编译 vetex_shader 及 fragment_shader, 并最终链接生成 可执行程序;
         String vertexShaderSource   = TextResourceReader.readTextFileFromResource(mContext,R.raw.simple_vertex_shader);
         String fragmentShaderSource = TextResourceReader.readTextFileFromResource(mContext,R.raw.simple_fragment_shader);
 
@@ -77,9 +78,19 @@ public class GLRender1 implements GLSurfaceView.Renderer {
         }
 
         GLES20.glUseProgram(program);
+
+        // cqd.note.4 获取 gl_FragColor 与 gl_Position 对应值的shader 可执行文件中的索引值;
+        // 此处需要区分 attribute、varying、 union 间区别;
+        // attribute
         aColorLocation = GLES20.glGetAttribLocation(program,A_COLOR);
         aPostionLocation = GLES20.glGetAttribLocation(program,A_POSITION);
 
+        // cqd.note.5 设置顶点坐标坐标与纹理坐标(shader 中顶点坐标与纹理坐标是打包存放，即 V1_F1_V2_F2_..._Vn_Fn);
+        // OpenGL着色器是用OpenGL着色器语言(OpenGL Shading Language, GLSL)写成;
+        // 图形渲染管线可以被划分为两个主要部分：第一部分把你的3D坐标转换为2D坐标，第二部分是把2D坐标转变为实际的有颜色的像素。
+        // 具体可参考: https://learnopengl-cn.github.io/01%20Getting%20started/04%20Hello%20Triangle/
+        // glVertexAttribPointer 作用是告知 opengl 如何解析顶点数据;
+        // glEnableVertexAttribArray 作用是启用该顶点属性;
         vertexData.position(0);
         GLES20.glVertexAttribPointer(aPostionLocation,POSITION_COMOPNENT_COUNT,GLES20.GL_FLOAT,false,STRIDE,vertexData);
         GLES20.glEnableVertexAttribArray(aPostionLocation);
@@ -98,6 +109,7 @@ public class GLRender1 implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
+        // cqd.note.6 每帧数据的回调;
         // 画三角形
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 6);
 
