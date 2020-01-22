@@ -1,4 +1,4 @@
-package com.roger.airhockey2.util;
+package com.example.Lesson1.util;
 
 /**
  * Created by Administrator on 2016/6/30.

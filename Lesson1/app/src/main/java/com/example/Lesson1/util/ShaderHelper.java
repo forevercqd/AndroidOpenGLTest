@@ -1,4 +1,4 @@
-package com.roger.airhockey2.util;
+package com.example.Lesson1.util;
 
 import android.opengl.GLES20;
 import android.util.Log;

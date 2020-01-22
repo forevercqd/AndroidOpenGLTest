@@ -4,6 +4,10 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 
+import com.example.Lesson1.util.LoggerConfig;
+import com.example.Lesson1.util.ShaderHelper;
+import com.example.Lesson1.util.TextResourceReader;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -59,16 +63,17 @@ public class GLRender1 implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        String vertexShaderSource = com.roger.airhockey2.util.TextResourceReader.readTextFileFromResource(mContext,R.raw.simple_vertex_shader);
-        String fragmentShaderSource = com.roger.airhockey2.util.TextResourceReader.readTextFileFromResource(mContext,R.raw.simple_fragment_shader);
 
-        int vertexShader = com.roger.airhockey2.util.ShaderHelper.compileVertexShader(vertexShaderSource);
-        int fragmentShader = com.roger.airhockey2.util.ShaderHelper.compileFragmentShader(fragmentShaderSource);
+        String vertexShaderSource   = TextResourceReader.readTextFileFromResource(mContext,R.raw.simple_vertex_shader);
+        String fragmentShaderSource = TextResourceReader.readTextFileFromResource(mContext,R.raw.simple_fragment_shader);
 
-        program = com.roger.airhockey2.util.ShaderHelper.linkProgram(vertexShader,fragmentShader);
+        int vertexShader   = ShaderHelper.compileVertexShader(vertexShaderSource);
+        int fragmentShader = ShaderHelper.compileFragmentShader(fragmentShaderSource);
 
-        if(com.roger.airhockey2.util.LoggerConfig.ON){
-            com.roger.airhockey2.util.ShaderHelper.validateProgram(program);
+        program = ShaderHelper.linkProgram(vertexShader,fragmentShader);
+
+        if(LoggerConfig.ON){
+            ShaderHelper.validateProgram(program);
         }
 
         GLES20.glUseProgram(program);
