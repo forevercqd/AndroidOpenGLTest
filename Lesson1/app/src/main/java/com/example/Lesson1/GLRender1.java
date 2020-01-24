@@ -15,6 +15,20 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
+import static android.opengl.GLES20.GL_FLOAT;
+import static android.opengl.GLES20.GL_LINES;
+import static android.opengl.GLES20.GL_POINTS;
+import static android.opengl.GLES20.GL_TRIANGLE_FAN;
+import static android.opengl.GLES20.glClear;
+import static android.opengl.GLES20.glClearColor;
+import static android.opengl.GLES20.glDrawArrays;
+import static android.opengl.GLES20.glEnableVertexAttribArray;
+import static android.opengl.GLES20.glGetAttribLocation;
+import static android.opengl.GLES20.glUseProgram;
+import static android.opengl.GLES20.glVertexAttribPointer;
+import static android.opengl.GLES20.glViewport;
+
 
 public class GLRender1 implements GLSurfaceView.Renderer {
     private static final int BYTES_PER_FLOAT = 4;
@@ -62,7 +76,7 @@ public class GLRender1 implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         // cqd.note.3 利用工具类编译 vetex_shader 及 fragment_shader, 并最终链接生成 可执行程序;
         String vertexShaderSource   = TextResourceReader.readTextFileFromResource(mContext,R.raw.simple_vertex_shader);
@@ -77,13 +91,13 @@ public class GLRender1 implements GLSurfaceView.Renderer {
             ShaderHelper.validateProgram(program);
         }
 
-        GLES20.glUseProgram(program);
+        glUseProgram(program);
 
         // cqd.note.4 获取 gl_FragColor 与 gl_Position 对应值的shader 可执行文件中的索引值;
         // 此处需要区分 attribute、varying、 union 间区别;
         // attribute
-        aColorLocation = GLES20.glGetAttribLocation(program,A_COLOR);
-        aPostionLocation = GLES20.glGetAttribLocation(program,A_POSITION);
+        aColorLocation = glGetAttribLocation(program,A_COLOR);
+        aPostionLocation = glGetAttribLocation(program,A_POSITION);
 
         // cqd.note.5 设置顶点坐标坐标与纹理坐标(shader 中顶点坐标与纹理坐标是打包存放，即 V1_F1_V2_F2_..._Vn_Fn);
         // OpenGL着色器是用OpenGL着色器语言(OpenGL Shading Language, GLSL)写成;
@@ -92,35 +106,35 @@ public class GLRender1 implements GLSurfaceView.Renderer {
         // glVertexAttribPointer 作用是告知 opengl 如何解析顶点数据;
         // glEnableVertexAttribArray 作用是启用该顶点属性;
         vertexData.position(0);
-        GLES20.glVertexAttribPointer(aPostionLocation,POSITION_COMOPNENT_COUNT,GLES20.GL_FLOAT,false,STRIDE,vertexData);
-        GLES20.glEnableVertexAttribArray(aPostionLocation);
+        glVertexAttribPointer(aPostionLocation,POSITION_COMOPNENT_COUNT,GL_FLOAT,false,STRIDE,vertexData);
+        glEnableVertexAttribArray(aPostionLocation);
 
         vertexData.position(POSITION_COMOPNENT_COUNT);
-        GLES20.glVertexAttribPointer(aColorLocation,COLOR_COMPONENT_COUNT,GLES20.GL_FLOAT,false,STRIDE,vertexData);
-        GLES20.glEnableVertexAttribArray(aColorLocation);
+        glVertexAttribPointer(aColorLocation,COLOR_COMPONENT_COUNT,GL_FLOAT,false,STRIDE,vertexData);
+        glEnableVertexAttribArray(aColorLocation);
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        GLES20.glViewport(0, 0, width, height);
+        glViewport(0, 0, width, height);
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT);
 
         // cqd.note.6 每帧数据的回调;
         // 画三角形
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 6);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 6);
 
         // 画横线
-        GLES20.glDrawArrays(GLES20.GL_LINES, 6, 2);
+        glDrawArrays(GL_LINES, 6, 2);
 
         // 画竖线
-        GLES20.glDrawArrays(GLES20.GL_LINES, 8, 2);
+        glDrawArrays(GL_LINES, 8, 2);
 
         // 画点
-        GLES20.glDrawArrays(GLES20.GL_POINTS,8, 1);
-        GLES20.glDrawArrays(GLES20.GL_POINTS,9, 1);
+        glDrawArrays(GL_POINTS,8, 1);
+        glDrawArrays(GL_POINTS,9, 1);
     }
 }
