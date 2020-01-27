@@ -27,22 +27,23 @@ public class GLRender2 implements GLSurfaceView.Renderer {
     private int mOpenGLProgramID  = -1;
 
     private final String A_POSITION = "a_Position";
-    private final String U_COLOR = "u_Color";
+    private final String A_COLOR = "a_Color";
 
     private int mAPosition = -1;
-    private int mUColor = -1;
+    private int mAColor = -1;
 
     private final int A_POSITION_SIZE = 2;
+    private final int A_COLOR_SIZE = 3;
+
     private final int BYTE_PER_FLOAT = 4;
     private final float[] mVertexArrary = {
-            -0.5F,  -0.5F,      // 0    左下角;
-            0.5F,   -0.5F,      // 1    右下角
-            0.5F,   0.5F,       // 2
+            -0.5F,  -0.5F,   1.0f, 0.0f, 0.0f,     // 0    左下角;
+            0.5F,   -0.5F,   0.0f, 1.0f, 0.0f,     // 1    右下角;
+            0.5F,   0.5F,    0.0f, 0.0f, 1.0f,     // 2    右上角;
 
-            -0.5F,  0.5F,       // 3
-            -0.5F,  -0.5F
+            -0.5F,  0.5F,    1.0f, 1.0f, 1.0f,     // 3    左上角;
     };
-    private final int STRIDE = A_POSITION_SIZE * BYTE_PER_FLOAT;
+    private final int STRIDE = (A_POSITION_SIZE + A_COLOR_SIZE)* BYTE_PER_FLOAT;
 
 
     public GLRender2(Context context){
@@ -67,14 +68,18 @@ public class GLRender2 implements GLSurfaceView.Renderer {
 
         // cqd.note.2 获取 shader 中相关变量的索引值;
         mAPosition = GLES20.glGetAttribLocation(mOpenGLProgramID, A_POSITION);
-        mUColor = GLES20.glGetUniformLocation(mOpenGLProgramID, U_COLOR);
+        mAColor = GLES20.glGetAttribLocation(mOpenGLProgramID, A_COLOR);
 
         // cqd.note.3 给 shader 中相关变量赋值;
         mVertexFloatBuffer.position(0);
         GLES20.glVertexAttribPointer(mAPosition, A_POSITION_SIZE, GLES20.GL_FLOAT, true,
                 STRIDE, mVertexFloatBuffer);
-
         GLES20.glEnableVertexAttribArray(mAPosition);
+
+        mVertexFloatBuffer.position(A_POSITION_SIZE);
+        GLES20.glVertexAttribPointer(mAColor, A_COLOR_SIZE, GLES20.GL_FLOAT, true,
+                STRIDE, mVertexFloatBuffer);
+        GLES20.glEnableVertexAttribArray(mAColor);
     }
 
     @Override
@@ -89,16 +94,12 @@ public class GLRender2 implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 4); // cqd.question 为什么此处划出来的三角形不是预期的直角三角形;
 
-        GLES20.glUniform4f(mUColor, 1.0f, 0, 0, 1.0f);
         GLES20.glDrawArrays(GLES20.GL_POINTS, 0, 1);
 
-        GLES20.glUniform4f(mUColor, 0.0f, 1.0f, 0, 1);
         GLES20.glDrawArrays(GLES20.GL_POINTS, 1, 1);
 
-        GLES20.glUniform4f(mUColor, 0.0f, 0, 1, 1);
         GLES20.glDrawArrays(GLES20.GL_POINTS, 2, 1);
 
-        GLES20.glUniform4f(mUColor, 1.0f, 1, 1, 1);
         GLES20.glDrawArrays(GLES20.GL_POINTS, 3, 1);
 
     }
