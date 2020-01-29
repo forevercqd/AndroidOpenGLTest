@@ -14,10 +14,10 @@ public class TextureShape {
     public final static int STRIDE = (POSITION_COMPENT_COUNT + TEXTURE_COMPENT_COUNT) * BYTES_PER_FLOAT;
 
     public static final float[] vertex_data = {
-            -0.5F,  -0.5F,      0.0f, 0.0f,
-            0.5F,   -0.5F,      1.0f, 0.0f,
-            0.5F,   0.5F,       1.0f, 1.0f,
-            -0.5F,  0.5F,       0.0f, 1.0f
+            -0.5F,  -0.5F,      0.0f, 1.0f,
+            0.5F,   -0.5F,      1.0f, 1.0f,
+            0.5F,   0.5F,       1.0f, 0.0f,
+            -0.5F,  0.5F,       0.0f, 0.0f
     };
 
     public TextureShape(){
