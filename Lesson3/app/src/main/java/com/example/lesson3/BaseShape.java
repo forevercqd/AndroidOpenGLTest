@@ -32,6 +32,7 @@ public class BaseShape {
     }
 
     public void draw(){
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 4);
+//        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 4);
+        GLES20.glDrawArrays(GLES20.GL_POINTS, 0, 4);
     }
 }
