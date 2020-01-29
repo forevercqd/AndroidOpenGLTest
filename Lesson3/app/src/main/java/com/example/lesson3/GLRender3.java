@@ -40,7 +40,7 @@ public class GLRender3 implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         // cqd.note.1 加载本地的图像，并上传至新建的2D纹理，同时返回该纹理ID值;
-        mTextureID = TextureHelper.loadTexture(mContext, R.drawable.air_hockey_surface);
+        mTextureID = TextureHelper.loadTexture(mContext, R.drawable.beauty);
 
         mTextureShaderProgram = new TextureShaderProgram(mContext, R.raw.texture_vertex_shader, R.raw.texture_fragment_shader);
         mTextureShape = new TextureShape();
