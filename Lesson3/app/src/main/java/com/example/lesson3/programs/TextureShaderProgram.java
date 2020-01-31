@@ -33,7 +33,7 @@ public class TextureShaderProgram extends ShaderProgram {
         GLES20.glUniformMatrix4fv(uMatrix, 1, false, matrix, 0);   // 设置旋转矩阵;
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
-        GLES20.glUniform1i(uTextureUnit, 0);       // cqd.note.question.1 此处设置为0是什么意思？
+        GLES20.glUniform1i(uTextureUnit, 0);       // 此处的0表示激活纹理单元0，其实是由 GLES20.GL_TEXTURE0 的下标0保持一致即可;
     }
 
     public int getAPositionID(){
