@@ -40,7 +40,7 @@ public class TextureHelper {
     GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,textureObjectIds[0]); // cqd.note 将刚创建的纹理绑定至 GL_TEXTURE_2D 目标上;
     GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_LINEAR_MIPMAP_LINEAR);
     GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_LINEAR);
-    GLUtils.texImage2D(GLES20.GL_TEXTURE_2D,0,bitmap,0);  // glteximage2d 功能是根据指定的参数，生成一个2D纹理（Texture），那 glGenTextures 表示创建一个texture， 两者间关系是什么？一个是表示创建一个画布，一个是将画面的内容画到画布上吗？
+    GLUtils.texImage2D(GLES20.GL_TEXTURE_2D,0,bitmap,0);  // 将图像贴至前面创建的 GL_TEXTURE_2D 类型的纹理 textureObjectIds[0]上;
     GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);  // 生成需要的所有级别的纹理;
 
     bitmap.recycle();
